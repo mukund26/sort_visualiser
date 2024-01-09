@@ -1,7 +1,7 @@
 import React from 'react';
 import './SortVisualiser.css';
 import { bubbleSortWithAnimation } from '../SortingAlgos/bubbleSort.js';
-import { mergeSort } from '../SortingAlgos/mergeSort.js';
+import { mergeSortWithAnimation } from '../SortingAlgos/mergeSort.js';
 import { quickSort } from '../SortingAlgos/quickSort.js';
 import { heapSort } from '../SortingAlgos/heapSort.js';
 
@@ -13,7 +13,7 @@ import { heapSort } from '../SortingAlgos/heapSort.js';
 // stop sorting if refresh clicked and disable other buttons
 // animate all sortings, base sorting and animated sorts
 
-const NUMBER_OF_ARRAY_BARS = 350;
+const NUMBER_OF_ARRAY_BARS = 290;
 
 const BASE_COLOR = 'turquoise';
 
@@ -76,7 +76,9 @@ class SortVisualiser extends React.Component {
 
   mergeSort() {
     const startTime = performance.now();
-    const animation = mergeSort(this.state.array);
+    const animation = mergeSortWithAnimation(this.state.array);
+    const endTime = performance.now()
+    const timeTaken = endTime - startTime;
     for (let i = 0; i < animation.length; i++) {
       const arrayBars = document.getElementsByClassName('array-bar');
       const [barOneIdx, barTwoIdx, funcVal] = animation[i];
@@ -94,19 +96,12 @@ class SortVisualiser extends React.Component {
             barTwoStyle.backgroundColor = 'red';
           }, i * ANIMATION_TIME_IN_MS);
         }
-      } else if (funcVal === 'swap') {
-        setTimeout(() => {
-          this.heightSwap(arrayBars[barOneIdx], arrayBars[barTwoIdx]);
-        }, i * ANIMATION_TIME_IN_MS);
       } else {
         setTimeout(() => {
-          barOneStyle.backgroundColor = 'red';
-          barTwoStyle.backgroundColor = 'red';
+          barOneStyle.height = `${funcVal}px`;
         }, i * ANIMATION_TIME_IN_MS);
       }
     }
-    const endTime = performance.now()
-    const timeTaken = endTime - startTime;
     this.setState({ mergeSortTime: timeTaken });
   }
 
@@ -119,6 +114,8 @@ class SortVisualiser extends React.Component {
   bubbleSort() {
     const startTime = performance.now();
     const animation = bubbleSortWithAnimation(this.state.array);
+    const endTime = performance.now()
+    const timeTaken = endTime - startTime;
     for (let i = 0; i < animation.length; i++) {
       const arrayBars = document.getElementsByClassName('array-bar');
       const [barOneIdx, barTwoIdx, funcVal] = animation[i];
@@ -147,8 +144,6 @@ class SortVisualiser extends React.Component {
         }, i * ANIMATION_TIME_IN_MS);
       }
     }
-    const endTime = performance.now()
-    const timeTaken = endTime - startTime;
     this.setState({ bubbleSortTime: timeTaken });
   }
 
@@ -170,7 +165,7 @@ class SortVisualiser extends React.Component {
   }
 
   normaliseRange(value) {
-    return Math.floor(((value) * 345)/100) + 5;
+    return Math.floor(((value) * 285) / 100) + 5;
   }
 
   handleSizeChange(opts) {
@@ -181,7 +176,7 @@ class SortVisualiser extends React.Component {
   }
 
   render() {
-    const { auxArr, mergeSortTime, bubbleSortTime, quickSortTime, heapSortTime } = this.state;
+    const { auxArr, mergeSortTime, bubbleSortTime, quickSortTime, heapSortTime, arraySize } = this.state;
     const barWidth = Math.floor(700 / auxArr.length);
     return (
       <div className="array-container">
@@ -190,7 +185,7 @@ class SortVisualiser extends React.Component {
           {auxArr.map((value, idx) => {
             return (
               <div className="array-bar" key={idx} style={{ height: `${value}px`, width: `${barWidth}px`, backgroundColor: BASE_COLOR }}>
-            </div>
+              </div>
             )
           })}
         </div>
@@ -204,8 +199,9 @@ class SortVisualiser extends React.Component {
           <button className="algorithmButton" onClick={() => this.openNewPanel()}>Visualize All Together</button>
         </div>
         <div className='size-container'>
-          <div className="algorithmButton" style={{ marginTop: `15px`}}>Adjust array size </div>
-          <input type="range" min="0" max="100" id="changeSize" className='size-adjuster' onChange={(target) => this.handleSizeChange(target)}/>
+          <div className="algorithmButton" style={{ marginTop: `15px` }}>Adjust array size </div>
+          <input type="range" min="0" max="100" id="changeSize" className='size-adjuster' onChange={(target) => this.handleSizeChange(target)} />
+          <div className="algorithmButton" style={{ marginTop: `15px` }}>{arraySize}</div>
         </div>
         <div>
           <p>Merge Sort took: {mergeSortTime.toFixed(5)} milliseconds | Bubble Sort took: {bubbleSortTime.toFixed(5)} milliseconds | Quick Sort took: {quickSortTime.toFixed(5)} milliseconds | Heap Sort took: {heapSortTime.toFixed(5)} milliseconds</p>

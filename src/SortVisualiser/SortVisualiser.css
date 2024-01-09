@@ -2,6 +2,7 @@
   position: absolute;
   left: 150px;
   width: 90rem;
+  max-width: 80%;
 }
 
 .array-bar {
@@ -21,6 +22,9 @@
   margin: 0;
   margin-bottom: 10px;
   height: 46.875rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .button-container {

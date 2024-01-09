@@ -1,16 +1,19 @@
 import React from 'react';
 import './SortVisualiser.css';
-import * as SortingAlgos from '../SortingAlgos/sorting_algorithms.js';
+import { bubbleSortWithAnimation } from '../SortingAlgos/bubbleSort.js';
+import { mergeSort } from '../SortingAlgos/mergeSort.js';
+import { quickSort } from '../SortingAlgos/quickSort.js';
+import { heapSort } from '../SortingAlgos/heapSort.js';
 
 // Show all soring algorithms at once in separate grids and then their graphs and visualisations
 // print the time complexity and space complexity of each algorithm in the grid
 // print the value of time taken to sort the array in the grid for each algorithm 
 // print the value of time with animation and without it 
-// all sorting algo boxes should be of same size and should be responsive and print all value corresponding to it
-// factory pattern for all sorting algorithms
-// correctly sort on updated/sorted array
+// maybe use redux if looks more neat and  easy
+// stop sorting if refresh clicked and disable other buttons
+// animate all sortings, base sorting and animated sorts
 
-const NUMBER_OF_ARRAY_BARS = 350; // Number of bars in the array -> make it dynamic (ask user)
+const NUMBER_OF_ARRAY_BARS = 350;
 
 const BASE_COLOR = 'turquoise';
 
@@ -58,8 +61,8 @@ class SortVisualiser extends React.Component {
         arr.push(this.randomIntFromInterval(-1000, 1000));
       }
       const jsSortedArr = arr.slice().sort((a, b) => a - b);
-      const {array:manualSortedArr} = SortingAlgos.bubbleSort(arr.slice());
-      console.log(this.verifySortingAlgo(jsSortedArr, manualSortedArr));
+      const animation = bubbleSortWithAnimation(arr);
+      console.log(this.verifySortingAlgo(jsSortedArr, arr));
     }
   }
 
@@ -72,15 +75,39 @@ class SortVisualiser extends React.Component {
   }
 
   mergeSort() {
-    // const jsSortedArray = this.state.array.slice().sort((a, b) => a - b);
     const startTime = performance.now();
-    const sortedArray = SortingAlgos.mergeSort(this.state.array);
+    const animation = mergeSort(this.state.array);
+    for (let i = 0; i < animation.length; i++) {
+      const arrayBars = document.getElementsByClassName('array-bar');
+      const [barOneIdx, barTwoIdx, funcVal] = animation[i];
+      const barOneStyle = arrayBars[barOneIdx].style;
+      const barTwoStyle = arrayBars[barTwoIdx].style;
+      if (funcVal === 'compare') {
+        if (i > 1 && animation[i - 1][2] !== 'compare') {
+          setTimeout(() => {
+            barOneStyle.backgroundColor = BASE_COLOR;
+            barTwoStyle.backgroundColor = BASE_COLOR;
+          }, i * ANIMATION_TIME_IN_MS);
+        } else {
+          setTimeout(() => {
+            barOneStyle.backgroundColor = 'red';
+            barTwoStyle.backgroundColor = 'red';
+          }, i * ANIMATION_TIME_IN_MS);
+        }
+      } else if (funcVal === 'swap') {
+        setTimeout(() => {
+          this.heightSwap(arrayBars[barOneIdx], arrayBars[barTwoIdx]);
+        }, i * ANIMATION_TIME_IN_MS);
+      } else {
+        setTimeout(() => {
+          barOneStyle.backgroundColor = 'red';
+          barTwoStyle.backgroundColor = 'red';
+        }, i * ANIMATION_TIME_IN_MS);
+      }
+    }
     const endTime = performance.now()
     const timeTaken = endTime - startTime;
     this.setState({ mergeSortTime: timeTaken });
-    this.setState({ array: sortedArray });
-    // console.log(`Merge sort took ${endTime - startTime} milliseconds`)
-    // console.log(this.verifySortingAlgo(jsSortedArray, sortedArray));
   }
 
   heightSwap(a, b) {
@@ -90,12 +117,8 @@ class SortVisualiser extends React.Component {
   }
 
   bubbleSort() {
-    console.log('before sorting', this.state.array)
-
-    // const jsSortedArray = this.state.array.slice().sort((a, b) => a - b);
     const startTime = performance.now();
-    const { animation, array: sortedArray } = SortingAlgos.bubbleSort(this.state.array);
-    console.log("sorted array ", sortedArray)
+    const animation = bubbleSortWithAnimation(this.state.array);
     for (let i = 0; i < animation.length; i++) {
       const arrayBars = document.getElementsByClassName('array-bar');
       const [barOneIdx, barTwoIdx, funcVal] = animation[i];
@@ -127,27 +150,21 @@ class SortVisualiser extends React.Component {
     const endTime = performance.now()
     const timeTaken = endTime - startTime;
     this.setState({ bubbleSortTime: timeTaken });
-    // setTimeout(this.setState({ array: sortedArray }), (animation.length + 1) * ANIMATION_TIME_IN_MS);
-    console.log('after sorting', this.state.array)
   }
 
   quickSort() {
-    const jsSortedArray = this.state.array.slice().sort((a, b) => a - b);
     const startTime = performance.now();
-    const sortedArray = SortingAlgos.quickSort(this.state.array);
+    const sortedArray = quickSort(this.state.array);
     const endTime = performance.now()
     const timeTaken = endTime - startTime;
-    console.log(this.verifySortingAlgo(jsSortedArray, sortedArray));
     this.setState({ quickSortTime: timeTaken });
   }
 
   heapSort() {
-    const jsSortedArray = this.state.array.slice().sort((a, b) => a - b);
     const startTime = performance.now();
-    const sortedArray = SortingAlgos.heapSort(this.state.array);
+    const sortedArray = heapSort(this.state.array);
     const endTime = performance.now()
     const timeTaken = endTime - startTime;
-    console.log(this.verifySortingAlgo(jsSortedArray, sortedArray));
     this.setState({ array: sortedArray });
     this.setState({ heapSortTime: timeTaken });
   }

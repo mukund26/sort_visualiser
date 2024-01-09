@@ -1,0 +1,66 @@
+.array-container {
+  position: absolute;
+  left: 150px;
+  width: 90rem;
+}
+
+.array-bar {
+  background-color: pink;
+  display: inline-block;
+  margin: 0 1px;
+}
+
+.parent-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.elements-display {
+  padding: 10px;
+  border: 5px solid gray;
+  margin: 0;
+  margin-bottom: 10px;
+  height: 46.875rem;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: #34495e;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.heading {
+  text-align: center;
+  font-size: 30px;
+  margin: 0;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  color: blueviolet;
+}
+
+.algorithmButton {
+  color: white;
+  font-size: 16px;
+  font-family: monospace;
+  display: inline-block;
+  margin-left: 15px;
+  margin-right: 15px;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  background: none; 
+}
+
+.size-container {
+  background-color: #34495e;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.size-adjuster {
+  background: white;
+  cursor: pointer;
+}

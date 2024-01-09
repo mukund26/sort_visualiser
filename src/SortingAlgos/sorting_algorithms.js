@@ -22,16 +22,14 @@ const mergeSort = (arr) => {
 }
 
 const bubbleSort = (arr) => {
-  let auxiliaryArray = arr.slice();
-  let swapped;
-  let animation = [];
+  let swapped, animation = [];
   const length = arr.length;
   for (let i = 0; i < length - 1; i++) {
     swapped = false;
     for (let j = 0; j < length - i - 1; j++) {
       animation.push([j, j + 1, 'compare']);
-      if (auxiliaryArray[j] > auxiliaryArray[j + 1]) {
-        [auxiliaryArray[j], auxiliaryArray[j + 1]] = [auxiliaryArray[j + 1], auxiliaryArray[j]];
+      if (arr[j] > arr[j + 1]) {
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
         swapped = true;
         animation.push([j, j + 1, 'swap']);
         animation.push([j, j + 1, 'compare']);
@@ -42,7 +40,10 @@ const bubbleSort = (arr) => {
     }
     if (!swapped) break;
   }
-  return animation;
+  return {
+    animation,
+    array: arr
+  };
 }
 
 const partition = (arr, low, high) => {

@@ -17,7 +17,13 @@ const NUMBER_OF_ARRAY_BARS = 290;
 
 const BASE_COLOR = 'turquoise';
 
-const ANIMATION_TIME_IN_MS = 10;
+const TRANSITION_COLOUR = 'red';
+
+const PIVOT_COLOUR = 'violet';
+
+const PARTITION_COLOUR = 'yellow';
+
+const ANIMATION_TIME_IN_MS = 200;
 
 class SortVisualiser extends React.Component {
   constructor(props) {
@@ -61,7 +67,7 @@ class SortVisualiser extends React.Component {
         arr.push(this.randomIntFromInterval(-1000, 1000));
       }
       const jsSortedArr = arr.slice().sort((a, b) => a - b);
-      const animation = bubbleSortWithAnimation(arr);
+      const animation = mergeSortWithAnimation(arr);
       console.log(this.verifySortingAlgo(jsSortedArr, arr));
     }
   }
@@ -92,8 +98,8 @@ class SortVisualiser extends React.Component {
           }, i * ANIMATION_TIME_IN_MS);
         } else {
           setTimeout(() => {
-            barOneStyle.backgroundColor = 'red';
-            barTwoStyle.backgroundColor = 'red';
+            barOneStyle.backgroundColor = TRANSITION_COLOUR;
+            barTwoStyle.backgroundColor = TRANSITION_COLOUR;
           }, i * ANIMATION_TIME_IN_MS);
         }
       } else {
@@ -129,8 +135,8 @@ class SortVisualiser extends React.Component {
           }, i * ANIMATION_TIME_IN_MS);
         } else {
           setTimeout(() => {
-            barOneStyle.backgroundColor = 'red';
-            barTwoStyle.backgroundColor = 'red';
+            barOneStyle.backgroundColor = TRANSITION_COLOUR;
+            barTwoStyle.backgroundColor = TRANSITION_COLOUR;
           }, i * ANIMATION_TIME_IN_MS);
         }
       } else if (funcVal === 'swap') {
@@ -139,8 +145,8 @@ class SortVisualiser extends React.Component {
         }, i * ANIMATION_TIME_IN_MS);
       } else {
         setTimeout(() => {
-          barOneStyle.backgroundColor = 'red';
-          barTwoStyle.backgroundColor = 'red';
+          barOneStyle.backgroundColor = TRANSITION_COLOUR;
+          barTwoStyle.backgroundColor = TRANSITION_COLOUR;
         }, i * ANIMATION_TIME_IN_MS);
       }
     }
@@ -149,9 +155,54 @@ class SortVisualiser extends React.Component {
 
   quickSort() {
     const startTime = performance.now();
-    const sortedArray = quickSort(this.state.array);
+    const animation = quickSort(this.state.array);
     const endTime = performance.now()
     const timeTaken = endTime - startTime;
+    let lastPivot = -1;
+    for (let i = 0; i < animation.length; i++) {
+      const arrayBars = document.getElementsByClassName('array-bar');
+      const [func] = animation[i];
+      if (func === 'pivot') {
+        const idx = animation[i][1];
+        if (idx !== lastPivot && lastPivot !== -1) {
+          setTimeout(() => {
+            arrayBars[lastPivot].style.backgroundColor = BASE_COLOR
+          }, i * ANIMATION_TIME_IN_MS)
+        }
+        const barOneStyle = arrayBars[idx].style;
+        lastPivot = idx;
+        setTimeout(() => {
+          barOneStyle.backgroundColor = PIVOT_COLOUR
+        }, i * ANIMATION_TIME_IN_MS)
+      } else if (func === 'swap') {
+        const [funcVal, barOneIdx, barTwoIdx] = animation[i];
+        const barOneStyle = arrayBars[barOneIdx].style;
+        const barTwoStyle = arrayBars[barTwoIdx].style;
+        setTimeout(() => {
+          barOneStyle.backgroundColor = TRANSITION_COLOUR;
+          barTwoStyle.backgroundColor = PARTITION_COLOUR;
+        }, i * ANIMATION_TIME_IN_MS)
+        setTimeout(() => {
+          this.heightSwap(arrayBars[barOneIdx], arrayBars[barTwoIdx]);
+        }, i * ANIMATION_TIME_IN_MS);
+      } else if (func === 'not_swap') {
+        const [funcVal, barOneIdx, barTwoIdx] = animation[i];
+        const barOneStyle = arrayBars[barOneIdx].style;
+        const barTwoStyle = arrayBars[barTwoIdx].style;
+        setTimeout(() => {
+          barOneStyle.backgroundColor = TRANSITION_COLOUR;
+          barTwoStyle.backgroundColor = TRANSITION_COLOUR;
+        }, i * ANIMATION_TIME_IN_MS);
+      } else {
+        const [funcVal, barOneIdx, barTwoIdx] = animation[i];
+        const barOneStyle = arrayBars[barOneIdx].style;
+        const barTwoStyle = arrayBars[barTwoIdx].style;
+        setTimeout(() => {
+          barOneStyle.backgroundColor = BASE_COLOR;
+          barTwoStyle.backgroundColor = BASE_COLOR;
+        }, i * ANIMATION_TIME_IN_MS);
+      }
+    } 
     this.setState({ quickSortTime: timeTaken });
   }
 

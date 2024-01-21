@@ -7,18 +7,6 @@ import { quickSort } from '../SortingAlgos/quickSort.js';
 import { heapSort } from '../SortingAlgos/heapSort.js';
 import * as sortingConstants from './constants.ts'
 
-// Show all soring algorithms at once in separate grids and then their graphs and visualisations
-// print the time complexity and space complexity of each algorithm in the grid
-// print the value of time taken to sort the array in the grid for each algorithm 
-// print the value of time with animation and without it 
-// maybe use redux if looks more neat and  easy
-// stop sorting if refresh clicked and disable other buttons
-// animate all sortings, base sorting and animated sorts
-// animation to mark the end -> green color all the way
-// refresh to change array and color
-// mark ending color for each bar and make all green post sorting
-// time calculatio fix
-
 class SortVisualiser extends React.Component {
 
   constructor(props) {

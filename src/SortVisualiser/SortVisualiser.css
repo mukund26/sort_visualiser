@@ -5,6 +5,13 @@
   max-width: 80%;
 }
 
+.multi-array-container {
+  position: absolute;
+  left: 100px;
+  width: 90rem;
+  max-width: 88.5%;
+}
+
 .array-bar {
   background-color: pink;
   display: inline-block;
@@ -64,7 +71,85 @@
   margin-bottom: 10px;
 }
 
+.multi-size-container {
+  background-color: #34495e;
+  height: 50px;
+  margin-bottom: 10px;
+  width: 81.75rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.scroller-placement {
+  margin-left: 25rem;
+}
+
 .size-adjuster {
   background: white;
   cursor: pointer;
+}
+
+.home-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  color: white;
+  background-color: rgb(84, 105, 212);
+  box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 12%) 0px 1px 1px 0px, rgb(84 105 212) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 8%) 0px 2px 5px 0px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 8px;
+  display: inline-block;
+  min-height: 24px;
+  transition: background-color .24s,box-shadow .24s;
+}
+
+.sort-button {
+  margin-left: 30rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  color: white;
+  background-color: rgb(84, 105, 212);
+  box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 12%) 0px 1px 1px 0px, rgb(84 105 212) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 8%) 0px 2px 5px 0px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 8px;
+  display: inline-block;
+  min-height: 24px;
+  transition: background-color .24s,box-shadow .24s;
+}
+
+.top-bar {
+  display: flex;
+  flex-direction: row;
+}
+
+.align-heading {
+  margin-left: 25rem;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns with equal width */
+  grid-gap: 10px; /* Adjust the gap between items as needed */
+}
+
+.grid-item {
+  padding: 10px;
+  border: 5px solid gray;
+  margin: 0;
+  margin-bottom: 10px;
+  height: 15rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 37rem;
 }
